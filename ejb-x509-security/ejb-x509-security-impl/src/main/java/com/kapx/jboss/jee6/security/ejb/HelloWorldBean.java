@@ -21,5 +21,4 @@ public class HelloWorldBean implements HelloWorld {
 		logger.info("HelloWorldBean bean invoked with {} parameter", arg);
 		return "Hello !!! " + arg;
 	}
-
 }
