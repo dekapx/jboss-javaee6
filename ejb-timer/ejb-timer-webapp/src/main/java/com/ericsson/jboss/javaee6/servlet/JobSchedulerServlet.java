@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import com.kapx.jboss.jee6.jobs.api.TimerJob;
 import com.kapx.jboss.jee6.jobs.impl.TimerJobImpl;
 import com.kapx.jboss.jee6.model.FileSearchTaskRequest;
-import com.kapx.jboss.jee6.model.TaskRequest;
 import com.kapx.jboss.jee6.timer.api.SchedulerService;
 
 @WebServlet(name = "JobSchedulerServlet", urlPatterns = { "/JobSchedulerServlet" })
@@ -41,16 +40,16 @@ public class JobSchedulerServlet extends HttpServlet {
 
 		final TimerJob<FileSearchTaskRequest> timerJob = new TimerJobImpl(jobId, jobDesc, taskRequest);
 		final ScheduleExpression expression = createExpression();
-		
+
 		schedulerService.createTimer(timerJob, expression, false);
 	}
 
 	private ScheduleExpression createExpression() {
 		final ScheduleExpression expression = new ScheduleExpression();
-		expression.second("*/7");
+		expression.dayOfMonth("20-27");
+		expression.hour("16");
 		expression.minute("*");
-		expression.hour("*");
-		LOG.info("creating timer expression for 7 seconds ROP...");
+		expression.second("*/15");
 		return expression;
 	}
 
