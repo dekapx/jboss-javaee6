@@ -10,11 +10,14 @@ import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.kapx.jboss.jee6.jobs.api.TimerJob;
+import com.kapx.jboss.jee6.model.TaskRequest;
 import com.kapx.jboss.jee6.timer.api.SchedulerService;
 
 @Stateless
@@ -24,6 +27,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	@Resource
 	private TimerService timerService;
+
+	@Inject
+	Event<TaskRequest> events;
 
 	@Override
 	public Timer createTimer(final TimerJob<? extends Serializable> timerJob, final ScheduleExpression expression, boolean persistant) {
@@ -40,10 +46,13 @@ public class SchedulerServiceImpl implements SchedulerService {
 		return timerService.createCalendarTimer(expression, timerConfig);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Timeout
 	public void timeout(final Timer timer) {
-		TimerJob timerJob = (TimerJob) timer.getInfo();
+		TimerJob<TaskRequest> timerJob = (TimerJob<TaskRequest>) timer.getInfo();
 		logger.info("Executing timer job for jobId {}", timerJob.getJobId());
+
+		events.fire((TaskRequest) timerJob.getTaskRequest());
 	}
 
 }
