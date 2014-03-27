@@ -2,6 +2,7 @@ package com.ericsson.jboss.javaee6.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.ejb.ScheduleExpression;
@@ -30,8 +31,8 @@ public class JobSchedulerServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
-		writer.write("JobControllerServlet invoked ...");
-		writer.close();
+		writer.write("\nJobControllerServlet invoked ...");
+
 		LOG.info("JobControllerServlet invoked ...");
 
 		final String jobId = "FileSearchJob";
@@ -41,10 +42,29 @@ public class JobSchedulerServlet extends HttpServlet {
 		final TimerJob<FileSearchTaskRequest> timerJob = new TimerJobImpl(jobId, jobDesc, taskRequest);
 		final ScheduleExpression expression = createExpression();
 
+		LOG.info("Scheduler expression {} ", expression);
+
+		writer.write("\nScheduler expression \n" + expression);
 		schedulerService.createTimer(timerJob, expression, false);
+		writer.close();
 	}
 
 	private ScheduleExpression createExpression() {
+		final ScheduleExpression expression = new ScheduleExpression();
+		long timeInterval = 120000;
+
+		long timeMillis = System.currentTimeMillis() + timeInterval;
+		Date date = new Date(timeMillis);
+		LOG.info("Create time expression for {} " + date);
+		expression.start(date);
+		expression.hour("*");
+		expression.minute("*");
+		expression.second("*/15");
+		return expression;
+	}
+
+	@SuppressWarnings("unused")
+	private ScheduleExpression createExpression2() {
 		final ScheduleExpression expression = new ScheduleExpression();
 		expression.dayOfMonth("20-27");
 		expression.hour("16");
