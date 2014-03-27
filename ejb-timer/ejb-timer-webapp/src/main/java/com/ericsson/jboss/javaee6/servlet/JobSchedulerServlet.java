@@ -40,7 +40,7 @@ public class JobSchedulerServlet extends HttpServlet {
 		final FileSearchTaskRequest taskRequest = new FileSearchTaskRequest();
 
 		final TimerJob<FileSearchTaskRequest> timerJob = new TimerJobImpl(jobId, jobDesc, taskRequest);
-		final ScheduleExpression expression = createExpression();
+		final ScheduleExpression expression = createExpressionForSpecificTime();
 
 		LOG.info("Scheduler expression {} ", expression);
 
@@ -49,7 +49,7 @@ public class JobSchedulerServlet extends HttpServlet {
 		writer.close();
 	}
 
-	private ScheduleExpression createExpression() {
+	private ScheduleExpression createExpressionForSpecificTime() {
 		final ScheduleExpression expression = new ScheduleExpression();
 		long timeInterval = 120000;
 
@@ -64,7 +64,7 @@ public class JobSchedulerServlet extends HttpServlet {
 	}
 
 	@SuppressWarnings("unused")
-	private ScheduleExpression createExpression2() {
+	private ScheduleExpression createExpressionDateRange() {
 		final ScheduleExpression expression = new ScheduleExpression();
 		expression.dayOfMonth("20-27");
 		expression.hour("16");
