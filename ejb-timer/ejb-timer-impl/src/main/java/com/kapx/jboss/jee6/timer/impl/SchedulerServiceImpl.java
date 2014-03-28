@@ -43,13 +43,14 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 		final TimerConfig timerConfig = new TimerConfig(timerJob, persistant);
 		logger.info("new job is schedules for jobId {} ", timerJob.getJobId());
+
 		return timerService.createCalendarTimer(expression, timerConfig);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Timeout
+	@SuppressWarnings("unchecked")
 	public void timeout(final Timer timer) {
-		TimerJob<TaskRequest> timerJob = (TimerJob<TaskRequest>) timer.getInfo();
+		final TimerJob<TaskRequest> timerJob = (TimerJob<TaskRequest>) timer.getInfo();
 		logger.info("Executing timer job for jobId {}", timerJob.getJobId());
 
 		events.fire((TaskRequest) timerJob.getTaskRequest());

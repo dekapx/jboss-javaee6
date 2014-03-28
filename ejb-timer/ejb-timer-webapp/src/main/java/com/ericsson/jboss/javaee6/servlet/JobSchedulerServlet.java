@@ -29,8 +29,8 @@ public class JobSchedulerServlet extends HttpServlet {
 	@EJB
 	private SchedulerService schedulerService;
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter writer = response.getWriter();
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+		final PrintWriter writer = response.getWriter();
 		writer.write("\nJobControllerServlet invoked ...");
 
 		LOG.info("JobControllerServlet invoked ...");
@@ -51,20 +51,18 @@ public class JobSchedulerServlet extends HttpServlet {
 
 	private ScheduleExpression createExpressionForSpecificTime() {
 		// one minute delay to start the scheduling
-		long timeInterval = 60000;
+		final long timeInterval = 60000;
 
 		// start time with one minute delay
-		long timeMillis = System.currentTimeMillis() + timeInterval;
-		Date date = new Date(timeMillis);
-		LOG.info("Create time expression for {} " + date);
+		final long timeMillis = System.currentTimeMillis() + timeInterval;
 
 		final ScheduleExpression expression = new ScheduleExpression();
 		// the time when scheduler will trigger..
-		expression.start(date);
-		// every hour
+		expression.start(new Date(timeMillis));
+		// runs every hour
 		expression.hour("*");
-		// every 2 minutes
-		expression.minute("*/2");
+		// runs every 2 minutes interval
+		expression.minute("*/3");
 		// marked zero means seconds not considered
 		expression.second(0);
 
@@ -76,11 +74,11 @@ public class JobSchedulerServlet extends HttpServlet {
 		final ScheduleExpression expression = new ScheduleExpression();
 		// trigger between 20 to 27th of every month
 		expression.dayOfMonth("20-27");
-		// 16th hour of the date i.e. 16:00 PM
+		// trigger at 16th hour of the date i.e. 16:00 PM
 		expression.hour("16");
-		// every minute
+		// runs every minute
 		expression.minute("*");
-		// every 15 seconds
+		// runs every 15 seconds
 		expression.second("*/15");
 
 		return expression;

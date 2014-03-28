@@ -9,8 +9,7 @@ public class TimerJobImpl implements TimerJob<FileSearchTaskRequest> {
 	private String jobDesc;
 	private FileSearchTaskRequest taskRequest;
 
-	public TimerJobImpl(String jobId, String jobDesc, FileSearchTaskRequest taskRequest) {
-		super();
+	public TimerJobImpl(final String jobId, final String jobDesc, final FileSearchTaskRequest taskRequest) {
 		this.jobId = jobId;
 		this.jobDesc = jobDesc;
 		this.taskRequest = taskRequest;
