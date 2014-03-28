@@ -72,7 +72,7 @@ public class JobSchedulerServlet extends HttpServlet {
 	@SuppressWarnings("unused")
 	private ScheduleExpression createExpressionDateRange() {
 		final ScheduleExpression expression = new ScheduleExpression();
-		// trigger between 20 to 27th of every month
+		// trigger between 20th and 27th of every month
 		expression.dayOfMonth("20-27");
 		// trigger at 16th hour of the date i.e. 16:00 PM
 		expression.hour("16");
