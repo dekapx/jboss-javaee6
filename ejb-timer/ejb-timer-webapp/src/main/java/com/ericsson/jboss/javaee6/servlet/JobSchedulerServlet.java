@@ -51,15 +51,18 @@ public class JobSchedulerServlet extends HttpServlet {
 
 	private ScheduleExpression createExpressionForSpecificTime() {
 		final ScheduleExpression expression = new ScheduleExpression();
-		long timeInterval = 120000;
-
+		// one minute delay to start the scheduling
+		long timeInterval = 60000;
+		// create the start time with one minute delay
 		long timeMillis = System.currentTimeMillis() + timeInterval;
 		Date date = new Date(timeMillis);
 		LOG.info("Create time expression for {} " + date);
 		expression.start(date);
 		expression.hour("*");
-		expression.minute("*");
-		expression.second("*/15");
+		expression.minute("*/2"); // should run after every 2 minutes
+		// if time interval is more then 60 seconds then no need to provide
+		// value to seconds
+		// expression.second("*");
 		return expression;
 	}
 
