@@ -50,29 +50,39 @@ public class JobSchedulerServlet extends HttpServlet {
 	}
 
 	private ScheduleExpression createExpressionForSpecificTime() {
-		final ScheduleExpression expression = new ScheduleExpression();
 		// one minute delay to start the scheduling
 		long timeInterval = 60000;
-		// create the start time with one minute delay
+
+		// start time with one minute delay
 		long timeMillis = System.currentTimeMillis() + timeInterval;
 		Date date = new Date(timeMillis);
 		LOG.info("Create time expression for {} " + date);
+
+		final ScheduleExpression expression = new ScheduleExpression();
+		// the time when scheduler will trigger..
 		expression.start(date);
+		// every hour
 		expression.hour("*");
-		expression.minute("*/2"); // should run after every 2 minutes
-		// if time interval is more then 60 seconds then no need to provide
-		// value to seconds
-		// expression.second("*");
+		// every 2 minutes
+		expression.minute("*/2");
+		// marked zero means seconds not considered
+		expression.second(0);
+
 		return expression;
 	}
 
 	@SuppressWarnings("unused")
 	private ScheduleExpression createExpressionDateRange() {
 		final ScheduleExpression expression = new ScheduleExpression();
+		// trigger between 20 to 27th of every month
 		expression.dayOfMonth("20-27");
+		// 16th hour of the date i.e. 16:00 PM
 		expression.hour("16");
+		// every minute
 		expression.minute("*");
+		// every 15 seconds
 		expression.second("*/15");
+
 		return expression;
 	}
 
