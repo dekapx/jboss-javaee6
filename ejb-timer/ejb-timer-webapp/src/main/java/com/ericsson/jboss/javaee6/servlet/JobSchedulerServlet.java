@@ -40,15 +40,26 @@ public class JobSchedulerServlet extends HttpServlet {
 		final FileSearchTaskRequest taskRequest = new FileSearchTaskRequest();
 
 		final TimerJob<FileSearchTaskRequest> timerJob = new TimerJobImpl(jobId, jobDesc, taskRequest);
-		final ScheduleExpression expression = createExpressionForSpecificTime();
+		final ScheduleExpression expression = createScheduleExpression();
 
 		LOG.info("Scheduler expression {} ", expression);
 
 		writer.write("\nScheduler expression \n" + expression);
-		schedulerService.createTimer(timerJob, expression, false);
+		schedulerService.createTimer(timerJob, expression, true);
 		writer.close();
 	}
 
+	private ScheduleExpression createScheduleExpression() {
+		final ScheduleExpression expression = new ScheduleExpression();
+
+		expression.hour("*");
+		expression.minute("*");
+		expression.second("*/10");
+
+		return expression;
+	}
+
+	@SuppressWarnings("unused")
 	private ScheduleExpression createExpressionForSpecificTime() {
 		// one minute delay to start the scheduling
 		final long timeInterval = 60000;
