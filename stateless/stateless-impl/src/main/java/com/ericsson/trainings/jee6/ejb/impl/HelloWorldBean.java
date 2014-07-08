@@ -1,7 +1,11 @@
 package com.ericsson.trainings.jee6.ejb.impl;
 
+import java.util.concurrent.Future;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -31,8 +35,19 @@ public class HelloWorldBean implements HelloWorldLocal, HelloWorldRemote {
 
 	@Override
 	public String sayHello(final String arg) {
+		try {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		LOGGER.info("sayHello() method invoked with parameter \"{}\"", arg);
 		return "Hello !!! " + arg;
+	}
+
+	@Override
+	@Asynchronous
+	public Future<String> sayHelloAsync(final String arg) {
+		LOGGER.info("sayHelloAsync() method invoked with parameter \"{}\"", arg);
+		return new AsyncResult<String>("Hello !!! " + arg);
 	}
 
 }

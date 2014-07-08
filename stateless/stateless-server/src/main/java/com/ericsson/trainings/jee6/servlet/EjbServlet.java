@@ -32,9 +32,10 @@ public class EjbServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		final PrintWriter out = response.getWriter();
 		out.print("Application Servlet invoked...");
-		final String output = helloWorldEJB.sayHello("KAPX");
-		LOGGER.info("HelloWorldBean is invoked with output \"{}\"", output);
 		out.close();
+
+		final String output = helloWorldEJB.sayHello("KAPX");
+		LOGGER.info("HelloWorldBean generats the output \"{}\"", output);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

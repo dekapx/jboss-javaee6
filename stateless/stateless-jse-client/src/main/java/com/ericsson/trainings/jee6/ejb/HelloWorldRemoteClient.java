@@ -1,6 +1,7 @@
 package com.ericsson.trainings.jee6.ejb;
 
 import java.util.Properties;
+import java.util.concurrent.Future;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,7 +13,12 @@ public class HelloWorldRemoteClient {
 	public static void main(String[] args) {
 		try {
 			HelloWorldRemote remote = getHelloWorldRemote();
-			System.out.println(remote.sayHello("DeKapx"));
+
+			final String output = remote.sayHello("Kapx");
+			System.out.println("#################### Output from HelloWorld EJB [" + output + " ] ####################");
+
+			final Future<String> future = remote.sayHelloAsync("Async Kapx");
+			System.out.println("################## Invoking Async HelloWorld EJB " + future.get() + " ] ####################");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
