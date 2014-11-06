@@ -39,9 +39,6 @@ public class HelloWorldRemoteClient {
 		props.put("jboss.naming.client.remote.connectionprovider.create.options.org.xnio.Options.SSL_ENABLED", "true");
 		props.put("jboss.naming.client.connect.options.org.xnio.Options.SSL_STARTTLS", "true");
 
-		props.put(Context.SECURITY_PRINCIPAL, "admin");
-		props.put(Context.SECURITY_CREDENTIALS, "testing");
-
 		defineSystemProperties();
 
 		Context context = new InitialContext(props);
